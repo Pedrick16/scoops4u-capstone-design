@@ -121,8 +121,6 @@
 
 {% endif %} 
 <div class="modal-footer border-0 col">
-    <button onclick="window.print()" class="btn btn-primary btn-print me-2"><i class="ri-printer-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Print</span></button>
-    
     <form action="{% url 'rider_site:completed_process' %}" method="POST" class="text-end ms-auto modal-message">
         {% csrf_token %}
         <input type="hidden" value="{{ list_transaction.transaction_no}}" name="transaction_no">
