@@ -39,12 +39,7 @@ def cart_reseller(request):
     sum_amount = Cart.objects.filter(cart_user = request.user).aggregate(sum_amount =Sum('cart_ResellerAmount'))['sum_amount']
     cart = Cart.objects.filter(cart_user = request.user)	
     times_amount = None
-    if Cart.objects.filter(cart_user = request.user):
-        for carts in cart:     	
-            products = Product.objects.get(product_code = carts.cart_pcode)	
-            if products.product_stock < carts.cart_quantity:	
-                messages.error(request,("Some Product out of stock"))	
-                return redirect('reseller_site:add_cart')
+   
                 
     if sum_amount >= 5000:
         times_amount = int(sum_amount) * 0.02
@@ -118,6 +113,9 @@ def add_qty(request,productid):
     product = Product.objects.get(product_code = current_pcode)
     if product.product_stock == 0:
         messages.error(request,("No available Stock"))
+        return redirect('reseller_site:add_cart')
+    elif product.product_stock <= pos.cart_quantity:
+        messages.error(request,'The available stock is not enough')
         return redirect('reseller_site:add_cart')
     else:
         pos.cart_quantity = result

@@ -187,13 +187,13 @@
                                         </thead>
                                     </table>
                                 </div>
-
-                                
-                            {% endif %}
                             <form action="{% url 'admin_site:pos_removeall' %}" class="remove-div">
                                 {% csrf_token %}
                                 <button type="submit" id="removeAll" class="btn btn-remove btn-danger"><i class="ri-delete-bin-fill align-middle"></i><span class="align-middle ps-2">Remove All</span> </button>
                             </form>
+                                
+                            {% endif %}
+                           >
                         </div>
                     </div>
                 </div>
