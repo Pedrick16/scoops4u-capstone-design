@@ -1,0 +1,148 @@
+{% extends 'admin_site/base.html' %}
+{% block title %}
+DASHBOARD
+{% endblock title %}
+
+{% block content %}
+{% load humanize %}
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+  
+        <li class="nav-item active-nav">
+            <a class="nav-link" href="{% url 'rider_site:dashboard'%}">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+  
+        <li class="nav-heading pt-3">Management</li>
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'rider_site:transaction_orders'  %}">
+            <i class="ri-truck-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Delivery</span>
+        </a>
+        </li><!-- End Products Page Nav -->
+  
+        <li class="nav-heading pt-3">Reports</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'rider_site:report_deliver'%}">
+                <i class="ri-file-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+                <span>Delivery Report</span>
+            </a>
+        </li><!-- End Reports Page Nav -->
+  
+        <li class="nav-heading pt-3">Others</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:settings_profile' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                </a>
+                </li>
+            </ul>
+        </li>
+  
+        <li class="nav-item">
+            <a class="nav-link collapsed">
+                <i class="ri-information-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Support</span>
+            </a>
+        </li>
+    </ul>
+  </aside><!-- End Sidebar-->
+
+<main id="main" class="main mt-5">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                {% if user.role == "admin"%}
+                <li class="breadcrumb-item"><a href="{% url 'admin_site:dashboard'%}">Home</a></li>
+                {% endif %}
+        
+                {% if user.role == "staff"%}
+                <li class="breadcrumb-item"><a href="{% url 'staff_site:dashboard'%}">Home</a></li>
+                {% endif %}
+
+                {% if user.role == "reseller"%}
+                <li class="breadcrumb-item"><a href="{% url 'reseller_site:dashboard'%}">Home</a></li>
+                {% endif %}
+        
+                {% if user.role == "rider"%}
+                <li class="breadcrumb-item"><a href="{% url 'rider_site:dashboard'%}">Home</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+                <!-- left side -->
+                <div class="col-lg-8">
+                    <div class="row">
+                        <!-- Pending Orders Card -->
+                        <div class="col-lg-6">
+                                <div class="card info-card pending-card">
+                                    <div class="card-body dash mb-4">
+                                        <h5 class="card-title">Pending Orders
+                                            <span class="px-1"></span> 
+                                            <span></span></h5>
+                                            <!-- <span class="px-1">|</span> 
+                                            <span>Today</span></h5> -->
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="ri-time-fill"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                            <h6>{{ list_pending }}</h6>
+                                            <!-- <span class="text-success small pt-1 fw-bold">12%</span> 
+                                            <span class="text-muted small pt-2 ps-1">increase</span> -->
+                                            <span class="text-muted small pt-1 ">Orders</span>
+                                            <!-- <span class="text-muted small pt-2">Today</span> -->
+                                            <!-- <span class="text-muted small pt-1 ">Made</span>
+                                            <span class="text-muted small pt-2">Today</span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div><!-- End Pending Orders Trans Card -->
+
+                    <!-- Completed Card -->
+                        <div class="col-xxl-6 col-xl-12">
+                            <div class="card info-card completed-card">
+
+
+                                <div class="card-body dash mb-4">
+                                    <h5 class="card-title">Completed Orders
+                                            <span class="px-1"></span> 
+                                            <span></span></h5>
+                                            <!-- <span class="px-1">|</span> 
+                                            <span>Today</span></h5> -->
+                                    <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="ri-check-fill"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ list_complete}}</h6>
+                                                <span class="text-muted small pt-1 ">Orders</span>
+                                                <!-- <span class="text-muted small pt-2">Today</span> -->
+                                                <!-- <span class="text-muted small pt-1 ">Made</span>
+                                                <span class="text-muted small pt-2">Today</span> -->
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- End Completed Card -->
+
+                    </div>
+                </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+{% endblock content %}

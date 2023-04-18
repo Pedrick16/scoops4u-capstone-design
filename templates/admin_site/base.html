@@ -1,0 +1,398 @@
+
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" >
+
+
+    <!-- Vendors -->
+    <!-- <link href="../../static/css/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="{% static '/css/assets/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static '/css/assets/simple-datatables/style.css'%}" rel="stylesheet">
+    <link href="{% static '/css/assets/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/autofill/2.5.3/css/autoFill.dataTables.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.5.3/js/dataTables.autoFill.min.js"></script>
+    
+
+    <link href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/date-1.4.0/sp-2.1.2/datatables.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/date-1.4.0/sp-2.1.2/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+    <!-- <link href="{% static '/css/assets/DataTables/datatables.min.css'%}" rel="stylesheet">
+
+    <script src="{% static '/css/assets/DataTables/datatables.min.js'%}"></script> -->
+
+    <!-- Main CSS -->
+    <!-- <link href="../../static/css/sandi.css" rel="stylesheet"> -->
+    <link href="{% static '/css/sandi.css'%}" rel="stylesheet">
+    <title>
+      {% block title %}
+        SCOOPS 4 U
+      {% endblock title %}
+    </title>
+    <!-- <link rel="icon" href="../../static/img/icon.ico"> -->
+    <link rel="icon" href="{% static '/img/icon.ico'%}">
+  </head>
+
+<body>
+
+
+
+{% if user.role == "admin"%}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="{% url 'admin_site:dashboard'%}" class="logo d-flex align-items-center">
+      <img src="{% static '/img/logo-header.svg'%}" alt=""> 
+      <span class="d-none d-lg-block">SCOOPS 4 U</span>
+    </a>
+    <i class="ri-menu-4-line toggle-sidebar-btn ms-1 me-3" style="font-size: 20px; font-weight: 500; color:#001BDE;"></i>
+  </div><!-- End Logo -->
+  
+  <div class="search-bar mx-auto">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <button type="submit" title="Search"><i class="ri-search-line"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+  
+  <div class="POS POS-header">
+      <i class="fa-solid fa-cash-register"></i>
+      <a href="{%url 'admin_site:pos' %}">POS</a>
+    </div>
+    <!-- End POS -->
+  
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <i class="ri-search-line"></i>
+        </a>
+      </li><!-- End Search Icon-->
+  
+      <li class="nav-item dropdown pe-3">
+  
+        <a class="nav-link nav-profile d-flex align-items-center me-3" href="#" data-bs-toggle="dropdown">
+          <!-- {% if list_profile %}
+            {% for list in list_profile %}
+            <img src="/media/{{ list.profile_pic}}" alt="Profile-pic" width="30" height="30" class="rounded-circle">
+            {% endfor %}
+          {% endif %} -->
+          <!-- <i alt="Profile" class="ri-checkbox-blank-circle-fill"></i> -->
+          <span class="d-none d-md-block dropdown-toggle ps-2" style="text-transform: capitalize;">
+            {{ user }}
+          </span>
+        </a><!-- End Profile Image Icon -->
+  
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile p-2">
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{% url 'admin_site:my_profile' %}">
+              <i class="ri-user-line"></i>              
+              <span>My Profile</span>
+            </a>
+          </li>
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{%  url 'landing_page:logout' %}">
+              <i class="ri-logout-box-r-line"></i>              
+              <span>Sign Out</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+  
+    </ul>
+  </nav><!-- End Icons Navigation -->
+</header><!-- End Header -->
+
+
+{% endif %}
+
+
+{% if user.role == "staff"%}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="{% url 'staff_site:dashboard'%}" class="logo d-flex align-items-center">
+      <img src="{% static '/img/logo-header.svg'%}" alt="">
+      <span class="d-none d-lg-block">SCOOPS 4 U</span>
+    </a>
+    <i class="ri-menu-4-line toggle-sidebar-btn ms-1 me-3" style="font-size: 20px; font-weight: 500; color:#001BDE;"></i>
+  </div><!-- End Logo -->
+  
+  <div class="search-bar mx-auto">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <button type="submit" title="Search"><i class="ri-search-line"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+  
+  <div class="POS POS-header">
+      <a href="{%url 'admin_site:pos' %}">POS</a>
+    </div>
+    <!-- End POS -->
+  
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <i class="ri-search-line"></i>
+        </a>
+      </li><!-- End Search Icon-->
+  
+      <li class="nav-item dropdown pe-3">
+  
+        <a class="nav-link nav-profile d-flex align-items-center me-3" href="#" data-bs-toggle="dropdown">
+          <!-- {% if list_profile %}
+          {% for list in list_profile %}
+          <img src="/media/{{ list.profile_pic}}" alt="Profile-pic" width="30" height="30" class="rounded-circle">
+          {% endfor %}
+        {% endif %} -->
+          <!-- <i alt="Profile" class="ri-checkbox-blank-circle-fill"></i> -->
+          <span class="d-none d-md-block dropdown-toggle ps-2" style="text-transform: capitalize;">
+            {{ user }}
+          </span>
+        </a><!-- End Profile Image Icon -->
+  
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile p-2">
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{% url 'admin_site:my_profile' %}">
+              <i class="ri-user-line"></i>              
+              <span>My Profile</span>
+            </a>
+          </li>
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{%  url 'landing_page:logout' %}">
+              <i class="ri-logout-box-r-line"></i>              
+              <span>Sign Out</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+  
+    </ul>
+  </nav><!-- End Icons Navigation -->
+</header><!-- End Header -->
+
+
+
+{% endif %}
+
+{% if user.role == "reseller"%}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="{% url 'reseller_site:dashboard'%}" class="logo d-flex align-items-center">
+      <img src="{% static '/img/logo-header.svg'%}" alt="">
+      <span class="d-none d-lg-block">SCOOPS 4 U</span>
+    </a>
+    <i class="ri-menu-4-line toggle-sidebar-btn ms-1 me-3" style="font-size: 20px; font-weight: 500; color:#001BDE;"></i>
+  </div><!-- End Logo -->
+  
+  <div class="search-bar mx-auto">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <button type="submit" title="Search"><i class="ri-search-line"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+  
+  <div class="POS POS-header">
+      <a href="{% url 'reseller_site:add_cart'  %}">Order</a>
+    </div>
+    <!-- End POS -->
+  
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <i class="ri-search-line"></i>
+        </a>
+      </li><!-- End Search Icon-->
+  
+      <li class="nav-item dropdown pe-3">
+  
+        <a class="nav-link nav-profile d-flex align-items-center me-3" href="#" data-bs-toggle="dropdown">
+          <!-- {% if list_profile %}
+            {% for list in list_profile %}
+            <img src="/media/{{ list.profile_pic}}" alt="Profile-pic" width="30" height="30" class="rounded-circle">
+            {% endfor %}
+          {% endif %} -->
+          <!-- <i alt="Profile" class="ri-checkbox-blank-circle-fill"></i> -->
+          <span class="d-none d-md-block dropdown-toggle ps-2" style="text-transform: capitalize;">
+            {{ user }}
+          </span>
+        </a><!-- End Profile Image Icon -->
+  
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile p-2">
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{% url 'admin_site:my_profile' %}">
+              <i class="ri-user-line"></i>              
+              <span>My Profile</span>
+            </a>
+          </li>
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{%  url 'landing_page:logout' %}">
+              <i class="ri-logout-box-r-line"></i>              
+              <span>Sign Out</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+  
+    </ul>
+  </nav><!-- End Icons Navigation -->
+</header><!-- End Header -->
+
+{% endif %}
+
+{% if user.role == "rider"%}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="{% url 'rider_site:dashboard'%}" class="logo d-flex align-items-center">
+      <img src="{% static '/img/logo-header.svg'%}" alt="">
+      <span class="d-none d-lg-block">SCOOPS 4 U</span>
+    </a>
+    <i class="ri-menu-4-line toggle-sidebar-btn ms-1 me-3" style="font-size: 20px; font-weight: 500; color:#001BDE;"></i>
+  </div><!-- End Logo -->
+  
+  <div class="search-bar mx-auto">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <button type="submit" title="Search"><i class="ri-search-line"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+  
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <i class="ri-search-line"></i>
+        </a>
+      </li><!-- End Search Icon-->
+  
+      <li class="nav-item dropdown pe-3">
+  
+        <a class="nav-link nav-profile d-flex align-items-center me-3" href="#" data-bs-toggle="dropdown">
+          <!-- {% if list_profile %}
+            {% for list in list_profile %}
+            <img src="/media/{{ list.profile_pic}}" alt="Profile-pic" width="30" height="30" class="rounded-circle">
+            {% endfor %}
+          {% endif %} -->
+          <!-- <i alt="Profile" class="ri-checkbox-blank-circle-fill"></i> -->
+          <span class="d-none d-md-block dropdown-toggle ps-2" style="text-transform: capitalize;">
+            {{ user }}
+          </span>
+        </a><!-- End Profile Image Icon -->
+  
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile p-2">
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{% url 'admin_site:my_profile' %}">
+              <i class="ri-user-line"></i>              
+              <span>My Profile</span>
+            </a>
+          </li>
+  
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-center" href="{%  url 'landing_page:logout' %}">
+              <i class="ri-logout-box-r-line"></i>              
+              <span>Sign Out</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+  
+    </ul>
+  </nav><!-- End Icons Navigation -->
+</header><!-- End Header -->
+
+
+{% endif %}
+
+
+<div class="">
+  <div class="">
+      <div class="">
+          {% block content %}
+          
+          {% endblock content %}
+          
+          <!-- inlcude for modal -->
+          
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="">
+      {% block template %}
+     
+
+  {% endblock template %}
+
+
+</div>
+    
+<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
+
+<!-- Vendors -->
+<!-- <script src="../../static/css/assets/apexcharts/apexcharts.min.js"></script> -->
+<script src="{% static '/css/assets/apexcharts/apexcharts.min.js' %}" alt=""></script>
+
+<!-- <script src="../../static/css/assets/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="{% static '/css/assets/bootstrap/js/bootstrap.bundle.min.js' %}" alt=""></script>
+
+<!-- <script src="../../static/css/assets/simple-datatables/simple-datatables.js"></script> -->
+<script src="{% static '/css/assets/simple-datatables/simple-datatables.js' %}" alt=""></script>
+
+<!-- Template Main JS File -->
+<!-- <script src="../../static/css/assets/js/main.js"></script> -->
+
+<script src="https://kit.fontawesome.com/ef60a252be.js" crossorigin="anonymous"></script>
+<script src="{% static '/css/assets/js/main.js' %}" alt=""></script>
+<script src="{% static '/js/modal.js' %}" alt=""></script>
+<script src="{% static '/js/table.js' %}" alt=""></script>
+<script src="{% static '/js/status.js' %}" alt=""></script>
+<script src="{% static '/js/messages.js' %}" alt=""></script>
+<script src="{% static '/js/dashboard.js' %}" alt=""></script>
+<script src="{% static '/js/receipt.js' %}"></script>
+<script src="{% static '/js/profile.js' %}"></script>
+<script src="{% static '/js/ta.js' %}"></script>
+
+
+  
+
+
+
+
+</body>
+</html>

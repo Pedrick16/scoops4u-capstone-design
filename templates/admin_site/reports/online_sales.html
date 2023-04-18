@@ -1,0 +1,244 @@
+{% extends 'admin_site/base.html' %}
+
+{% block title %}
+    ONLINE SALES
+{% endblock title %}
+
+{% block content %}
+{% load humanize %}
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'admin_site:dashboard'%}" id="dash-ad">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-heading pt-3">Management</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
+                    <i class="ri-user-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>User Accounts</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="users-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                    <a href="{% url 'admin_site:user_list' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Users List</span>
+                    </a>
+                    </li>
+                    <li>
+                    <a href="{% url 'admin_site:list_reseller'%}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Resellers List</span>
+                    </a>
+                    </li>
+                    <li>
+                    <a href="{% url 'admin_site:list_inquiry'%}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Requests</span>
+                    </a>
+                    </li>
+            </ul>
+        </li><!-- End User Accounts Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'admin_site:list_product' %}">
+            <i class="ri-shopping-bag-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Products</span>
+        </a>
+        </li><!-- End Products Page Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#inventory-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-inbox-archive-line"style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Inventory</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="inventory-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                    <a href="{%url 'admin_site:inventory' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Add Stock</span>
+                    </a>
+            </li>
+            <li>
+                    <a href="{% url 'admin_site:view_inventory' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>View Stock</span>
+                    </a>
+            </li>
+        </ul>
+        </li><!-- End Inventory Page Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-shopping-cart-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Order</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="sales-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                    <a href="{% url 'admin_site:transaction_orders' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Pending</span>
+                    </a>
+            </li>
+            <li>
+                    <a href="{% url 'admin_site:transaction_outshipping' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Out For Delivery</span>
+                    </a>
+            </li>
+            <li>
+                    <a href="{% url 'admin_site:transaction_completed' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Delivered</span>
+                    </a>
+            </li>
+        </ul>
+        </li><!-- End Sales Nav -->
+
+        <li class="nav-heading pt-3">Reports</li>
+        <li class="mb-act nav-item active-nav">
+            <a class="nav-link " data-bs-target="#reports-nav" data-bs-toggle="collapse" href="#">
+                    <i class="ri-file-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Reports</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="reports-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{% url 'admin_site:report_actlog' %}" >
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Activity Log</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_site:report_online_sales' %} " class="active">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Online Sales</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_site:report_pos_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>POS Sales</span>
+                        </a>
+                    </li>
+            </ul>
+        </li>
+
+        <li class="nav-heading pt-3">Others</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed " data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                    <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                    <a href="{% url 'admin_site:settings_profile' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                    </a>
+                    </li>
+                    <li>
+                    <a href="{% url 'admin_site:list_archive' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Archived Resellers</span>
+                    </a>
+                    </li>
+                    <li>
+                    <a href="{% url 'admin_site:settings_product' %}">
+                            <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Settings</span>
+                    </a>
+                    </li>
+                    <!-- <li>
+                    <a href="reports-admin/act-logged-out.php">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Category</span>
+                    </a>
+                    </li> -->
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'admin_site:support' %}" class="nav-link collapsed ">
+                    <i class="ri-information-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Support</span>
+            </a>
+        </li>
+    </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main mt-5">
+    <div class="pagetitle">
+        <h1>Online Sales</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin_site:dashboard'%}">Home</a></li>
+                <li class="breadcrumb-item">Reports</li>
+                <li class="breadcrumb-item active">Online Sales</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body mt-3">
+                        <div class="report-u act-d">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h5 class="card-title feature">Online Sales</h5>
+                                    <div id="btn-place"></div>
+                                    <div class="show-entries mb-4">
+                                        <div id="showEntries"></div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-5  d-flex flex-column justify-content-end">
+                                    <div class="d-flex flex-row align-items-center mb-1">
+                                        <input type="type" id="minOS" name="min" class="form-control date-range-filter" placeholder="mm/dd/yyyy">
+                                        <span class="px-2 date-to">to</span>
+                                        <input type="type" id="maxOS" name="max" class="form-control date-range-filter" placeholder="mm/dd/yyyy">
+                                        <button class="btn btn-edit btn-filterOS ps-3 pe-0"><i class="ri-close-circle-fill"></i></button>
+                                        <button class="btn-placeOS btn btn-edit" data-toggle="tooltip" data-placement="bottom" title="Save/Export"></button>
+
+                                        <!-- <button id="btnExcel" class="btn btn-edit btn-excel" data-toggle="tooltip" data-placement="bottom" title="Export to Excel"></button>
+                                        <button id="btnExcel" class="btn btn-edit btn-print" data-toggle="tooltip" data-placement="bottom" title="Print"></button> -->
+
+
+                                        <!-- <p id="date_filter">
+                                            <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
+                                            <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="datepicker_to" />
+                                        </p> -->
+
+                                    </div>
+                                    
+                                    <form class="search-tab mb-4" action="{% url 'admin_site:search_reseller' %}" method="GET"  class="text-end px-4">
+                                        {% csrf_token %}
+                                        <input type="text" id="tableM" class="form-control p-2 ps-3" name="search" placeholder="Search">
+                                        <button class="btn btn-search btn-sm nope" type="submit"><i class="ri-search-line"></i></button>
+                                    </form>  
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Table with hoverable rows -->
+                        <div class="table-responsive">
+                            <table id="tableRepOS" class="table table-hover ">
+                                <thead>
+                                    <tr class="align-middle">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Sales No</th>
+                                        <th scope="col">Sales</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                </thead>
+                                    <tbody id="tableRow">
+                                        {% for list in transaction %}
+                                        <tr class="align-middle">
+                                            <td class="num-row"></td>
+                                            <td>{{ list.id }}</td>
+                                            <td>Php {{ list.transaction_totalprice|floatformat:2|intcomma}}</td>
+                                            
+                                            <td>{{ list.created_at|date:"m/d/Y"}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                            </table>
+
+                        <div class="text-end px-5">
+                            <!-- <label style="font-weight: bolder;" > Total Sales: &#8369;{{ list_transaction|floatformat:2|intcomma }}   </label> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+{% endblock content %}
+    

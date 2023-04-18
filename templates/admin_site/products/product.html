@@ -1,0 +1,387 @@
+
+
+{% extends 'admin_site/base.html' %}
+
+
+{% block title %}
+    PRODUCTS
+{% endblock title %}
+
+{% block content %}
+{% load humanize %}
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        {% if user.role == "admin"%}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'admin_site:dashboard'%}">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+        {% endif %}
+
+        {% if user.role == "staff"%}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'staff_site:dashboard'%}">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+        {% endif %}
+  
+        <li class="nav-heading pt-3">Management</li>
+        
+        {% if user.role == "admin"%}
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-user-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>User Accounts</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+        <ul id="users-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:user_list' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Users List</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_reseller'%}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Resellers List</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_inquiry'%}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Requests</span>
+                </a>
+                </li>
+            </ul>
+        </li><!-- End User Accounts Nav -->
+        {% endif %}
+  
+        <li class="nav-item active-nav">
+        <a class="nav-link" href="{%url 'admin_site:list_product' %}">
+            <i class="ri-shopping-bag-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Products</span>
+        </a>
+        </li><!-- End Products Page Nav -->
+  
+        <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#inventory-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-inbox-archive-line"style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Inventory</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="inventory-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{%url 'admin_site:inventory' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Add Stock</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:view_inventory' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>View Stock</span>
+                </a>
+            </li>
+        </ul>
+        </li><!-- End Inventory Page Nav -->
+  
+        {% if user.role == "admin"%}
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-shopping-cart-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Order</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="sales-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{% url 'admin_site:transaction_orders' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Pending</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_outshipping' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Out For Delivery</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_completed' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Delivered</span>
+                </a>
+            </li>
+        </ul>
+        </li><!-- End Sales Nav -->
+        {% endif %}
+        
+
+        {% if user.role == "staff"%}
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-shopping-cart-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Order</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="sales-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{% url 'admin_site:transaction_orders' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Pending</span>
+                </a>
+            </li>
+            <!-- <li>
+                <a href="{% url 'admin_site:transaction_outshipping' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Out For Delivery</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_completed' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Delivered</span>
+                </a>
+            </li> -->
+        </ul>
+        </li><!-- End Sales Nav -->
+        {% endif %}
+  
+        {% if user.role == "admin"%}
+        <li class="nav-heading pt-3">Reports</li>
+        <li class="mb-act nav-item">
+            <a class="nav-link collapsed " data-bs-target="#reports-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-file-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Reports</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="reports-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                        <a href="{% url 'admin_site:report_actlog' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Activity Log</span>
+                        </a>
+                </li>
+                <li>
+                        <a href="{% url 'admin_site:report_online_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Online Sales</span>
+                        </a>
+                </li>
+                <li>
+                        <a href="{% url 'admin_site:report_pos_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>POS Sales</span>
+                        </a>
+                </li>
+            </ul>
+        </li>
+        {% endif %}
+  
+        <li class="nav-heading pt-3">Others</li>
+        
+        <li class="nav-item">
+            {% if user.role == "admin"%}
+            <a class="nav-link collapsed " data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:settings_profile' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_archive' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Archived Resellers</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:settings_product' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Settings</span>
+                </a>
+                </li>
+                <!-- <li>
+                <a href="reports-admin/act-logged-out.php">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Category</span>
+                </a>
+                </li> -->
+            </ul>
+            {% endif %}
+
+            {% if user.role == "staff"%}
+            <a class="nav-link collapsed " data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:settings_profile' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                </a>
+                </li>
+                <!-- <li>
+                <a href="reports-admin/act-logged-out.php">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Category</span>
+                </a>
+                </li> -->
+            </ul>
+            {% endif %}
+        </li>
+  
+        <li class="nav-item">
+            <a href="{% url 'admin_site:support' %}" class="nav-link collapsed ">
+                <i class="ri-information-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Support</span>
+            </a>
+        </li>
+    </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main mt-5">
+    <div class="pagetitle">
+        <h1>Products</h1>
+        <nav>
+            {% if user.role == "admin"%}
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin_site:dashboard'%}">Home</a></li>
+                <li class="breadcrumb-item active">Products</li>
+            </ol>
+            {% endif %}
+
+            {% if user.role == "staff"%}
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'staff_site:dashboard'%}">Home</a></li>
+                <li class="breadcrumb-item active">Products</li>
+            </ol>
+            {% endif %}
+
+        </nav>
+    </div><!-- End Page Title -->
+
+    {% for message in messages  %}
+    {% if 'success' in message.tags %}
+    <p class='alert alert-success mt-3'>{{message}}</p>
+    {% elif 'error' in message.tags %}
+    <p class='alert alert-danger mt-3'>{{message}}</p>
+    {% else %}
+    <p class='alert alert-info mt-3'>{{message}}</p>
+    {% endif %}
+    {% endfor %}
+
+    <section class="section ">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body mt-3">
+                        <div class="add-product product-d mb-4">
+                            <h5 class="card-title feature">All Products</h5>
+                            <div class="show-entries">
+                                <div id="showEntries"></div>
+                            </div>
+                            <div class="modal-add-prod">
+                                <a href="{% url 'admin_site:add_product' %}" class="btn btn-add-product" data-bs-toggle="modal" data-bs-target="#addProductModal"><i class="ri-add-line align-middle me-2 text-end" style="font-size:17px; font-weight: 500;"></i><span class="align-middle pe-1">Add a New Product</span></a>
+                            </div>
+                            <form class="search-tab" action="{% url 'admin_site:search_product' %}" method="GET"  class="text-end px-4">
+                                {% csrf_token %}
+                                <input type="text" id="tableM" class="form-control p-2 ps-3" name="search" placeholder="Search">
+                                <button class="btn btn-search btn-sm nope" type="submit"><i class="ri-search-line"></i></button>
+                            </form>  
+                        </div> 
+                        
+                        <!-- Table with hoverable rows -->
+                        <div class="table-responsive">
+                            <table id="tableMain" class="table table-hover">
+                                <thead>
+                                <tr class="align-middle">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Product Code</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Product Category</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Reseller Price</th>
+                                    <th scope="col" >POS Price</th>
+                                    <th scope="col" >Available Stock</th>
+                                    <th scope="col" >Status</th>
+                                    <th scope="col" class="sort-no">Action</th>
+                                </tr>
+                                </thead>
+                                {% if list_products %}
+                                
+                                <tbody id="tableRow">
+                                    {% for list in list_products %}
+                                    <tr class="align-middle">
+                                        <td class="num-row"></td>
+                                        <td class="modal-view-product">
+                                            <a href="{% url 'admin_site:view_product' list.id %}" data-bs-toggle="modal" data-bs-target="#viewProductModal" class="text-decoration-none"><span >{{ list.product_code }}</span></a>
+                                        </td>
+                                        <td style="text-transform: capitalize;">{{ list.product_name }}</td>
+                                        <td style="text-transform: capitalize;">{{ list.product_category }}</td>
+                                        <td>{{ list.product_unit }}</td>
+                                        <td>Php {{ list.product_ResellerPrice|floatformat:2|intcomma }}</td>
+                                        <td>Php {{ list.product_price|floatformat:2|intcomma }}</td>
+                                        <td class="stock-status">{{ list.product_stock }}</td>
+
+
+                                        <!-- <td><span class="badge badge-stat-prod rounded-pill bg-primary">{{ list.product_status }}</span></td> -->
+
+                                        {% if list.product_status == "available" %}
+                                        <td><span class="badge rounded-pill bg-primary">{{ list.product_status }}</span></td>
+                                        {% else %}
+                                        <td><span class="badge rounded-pill bg-danger">{{ list.product_status }}</span></td>
+                                        {% endif %}
+                                        <td>
+                                            <form class="action"  method="POST">
+                                                <a href="{% url 'admin_site:edit_product' list.id %}"class="btn btn-edit modal-edit"><i class="ri-edit-fill"></i></a>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                                {% endif %}
+                            </table>
+                        </div>
+                        <!-- End Table with hoverable rows -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADD PRODUCT -->
+    <div class="modal fade border-0"  id="addProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content border-0 p-4">
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW PRODUCT -->
+    <div class="modal fade border-0"  id="viewProductModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg moda">
+            <div class="modal-content border-0 p-4">
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PRODUCT -->
+    <div class="modal fade border-0" id="editUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content border-0 p-4">
+                
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+        // product status
+    //     $('.badge-stat-prod').filter(function () {
+    //     return $(this).text() == 'available';
+    // }).removeClass('bg-danger')
+    //     .addClass('bg-primary')
+
+    // $('.badge-stat-prod').filter(function () {
+    //     return $(this).text() == 'not available';
+    // }).addClass('bg-danger')
+    //     .removeClass('bg-primary')
+
+        // var stockNo = '{{ list.product_stock }}'
+
+        // if (!(stockNo > 0)){
+        //     $('badge-stat-prod').val('available');
+        //     $('badge-stat-prod').removeClass('bg-danger');
+        //     $('badge-stat-prod').addClass('bg-primary');
+        // }
+        // else{
+        //     $('badge-stat-prod').val('not available');
+        //     $('badge-stat-prod').addClass('bg-danger');
+        //     $('badge-stat-prod').removeClass('bg-primary');
+        // }
+</script>
+{% endblock content %}
+    

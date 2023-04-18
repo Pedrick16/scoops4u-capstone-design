@@ -1,0 +1,380 @@
+{% extends 'admin_site/base.html' %}
+
+{% block title %}
+    INVENTORY
+{% endblock title %}
+
+{% block content %}
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        {% if user.role == "admin"%}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'admin_site:dashboard'%}">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+        {% endif %}
+
+        {% if user.role == "staff"%}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'staff_site:dashboard'%}">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+        {% endif %}
+  
+        <li class="nav-heading pt-3">Management</li>
+        
+        {% if user.role == "admin"%}
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-user-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>User Accounts</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+        <ul id="users-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:user_list' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Users List</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_reseller'%}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Resellers List</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_inquiry'%}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Requests</span>
+                </a>
+                </li>
+            </ul>
+        </li><!-- End User Accounts Nav -->
+        {% endif %}
+  
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'admin_site:list_product' %}">
+            <i class="ri-shopping-bag-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Products</span>
+        </a>
+        </li><!-- End Products Page Nav -->
+  
+        <li class="nav-item active-nav">
+        <a class="nav-link" data-bs-target="#inventory-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-inbox-archive-line"style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Inventory</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="inventory-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{%url 'admin_site:inventory' %}" class="active">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Add Stock</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:view_inventory' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>View Stock</span>
+                </a>
+            </li>
+        </ul>
+        </li><!-- End Inventory Page Nav -->
+  
+        {% if user.role == "admin"%}
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-shopping-cart-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Order</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="sales-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{% url 'admin_site:transaction_orders' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Pending</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_outshipping' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Out For Delivery</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_completed' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Delivered</span>
+                </a>
+            </li>
+        </ul>
+        </li><!-- End Sales Nav -->
+        {% endif %}
+        
+
+        {% if user.role == "staff"%}
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-shopping-cart-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Order</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="sales-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{% url 'admin_site:transaction_orders' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Pending</span>
+                </a>
+            </li>
+            <!-- <li>
+                <a href="{% url 'admin_site:transaction_outshipping' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Out For Delivery</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_completed' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Delivered</span>
+                </a>
+            </li> -->
+        </ul>
+        </li><!-- End Sales Nav -->
+        {% endif %}
+        {% if user.role == "admin"%}
+        <li class="nav-heading pt-3">Reports</li>
+        <li class="mb-act nav-item">
+            <a class="nav-link collapsed " data-bs-target="#reports-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-file-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Reports</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="reports-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'admin_site:report_actlog' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Activity Log</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_site:report_online_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Online Sales</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_site:report_pos_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>POS Sales</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {% endif %}
+  
+        <li class="nav-heading pt-3">Others</li>
+        <li class="nav-item">
+            {% if user.role == "admin"%}
+            <a class="nav-link collapsed " data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:settings_profile' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_archive' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Archived Resellers</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:settings_product' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Settings</span>
+                </a>
+                </li>
+            </ul>
+            {% endif %}
+
+            {% if user.role == "staff"%}
+            <a class="nav-link collapsed " data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:settings_profile' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                </a>
+                </li>
+                <!-- <li>
+                <a href="reports-admin/act-logged-out.php">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Category</span>
+                </a>
+                </li> -->
+            </ul>
+            {% endif %}
+        </li>
+  
+        <li class="nav-item">
+            <a href="{% url 'admin_site:support' %}" class="nav-link collapsed ">
+                <i class="ri-information-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Support</span>
+            </a>
+        </li>
+    </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main mt-5">
+    <div class="pagetitle">
+        <h1>Add Stock</h1>
+        <nav>
+            {% if user.role == "admin"%}
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin_site:dashboard'%}">Home</a></li>
+                <li class="breadcrumb-item">Inventory</li>
+                <li class="breadcrumb-item active">Add Stock</li>
+            </ol>
+            {% endif %}
+
+            {% if user.role == "staff"%}
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'staff_site:dashboard'%}">Home</a></li>
+                <li class="breadcrumb-item">Inventory</li>
+                <li class="breadcrumb-item active">Add Stock</li>
+            </ol>
+            {% endif %}
+        </nav>
+    </div><!-- End Page Title -->
+
+    {% for message in messages  %}
+    {% if 'success' in message.tags %}
+    <p class='alert alert-success mt-3'>{{message}}</p>
+    {% elif 'error' in message.tags %}
+    <p class='alert alert-danger mt-3'>{{message}}</p>
+    {% else %}
+    <p class='alert alert-info mt-3'>{{message}}</p>
+    {% endif %}
+    {% endfor %}
+    
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body mt-3">
+                        <div class="add-product product-d mb-4">
+                            <h5 class="card-title feature">All Products</h5>
+                            <div class="show-entries">
+                                <div id="showEntries"></div>
+                            </div>
+                            <!-- <a href="{% url 'admin_site:add_reseller' %}" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addReseller"><i class="ri-add-line align-middle me-2 text-end" style="font-size:17px; font-weight: 500;"></i><span class="align-middle pe-1">Add New Stock</span></a> -->
+                            <form class="search-tab" action="{% url 'admin_site:search_inventory' %}" method="GET"  class="text-end px-4">
+                                {% csrf_token %}
+                                <input type="text" id="tableM" class="form-control p-2 ps-3" name="search" placeholder="Search">
+                                <button class="btn btn-search btn-sm nope" type="submit"><i class="ri-search-line"></i></button>
+                            </form>  
+                        </div> 
+
+                        <!-- not used yet -->
+                        <div class="modal fade border-0" id="addReseller" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered ">
+                                <div class="modal-content border-0 p-4">
+                                    <div class="modal-header border-0">
+                                        <h1 class="modal-title" id="exampleModalLabel">New Reseller</h1>
+                                        <button type="button" class="ri-close-fill" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <form action="{% url 'admin_site:add_reseller' %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal-body pt-2 mt-0">
+                                                <!-- {% for message in  messages %}
+                                                    <p class="alert alert-success  mt-1">{{ message }}</p>
+                                                {% endfor %}
+                                                <form action="{% url 'admin_site:add_product' %}" method="POST">
+                                                        {% csrf_token %} -->
+                                                    <label for="first name">First Name</label>
+                                                    <input type="text" placeholder="" name="fname" class="form-control" required>
+    
+                                                    <label for="middle name">Middle Name</label>
+                                                    <input type="text" placeholder="" name="mname" class="form-control" required>
+    
+                                                    <label for="last name">Last Name</label>
+                                                    <input type="text" placeholder="" name="lname" class="form-control" required>
+
+                                                    <!-- this should be sex not gender -->
+                                                    <label for="sex">Sex</label>
+                                                    <select name="gender" class="form-control" id="gender" required >
+                                                        <option ></option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+
+                                                    <label for="contact">Contact No.</label>
+                                                    <input type="number" placeholder="" name="cnum" min="0" class="form-control" required>
+    
+                                                    <label for="address">Address</label>
+                                                    <input type="text" placeholder="" name="address" class="form-control" required>
+                                                    <!-- <textarea type="text" placeholder="" name="address" class="form-control" required></textarea> -->
+
+                                                    <label for="last name">Email</label>
+                                                    <input type="email" placeholder="" name="email" class="form-control" required>
+    
+                                                    <label for="valid-ID">Valid ID</label>
+                                                    <input type="file" placeholder="" name="valid-ID" accept=".jpg, .jpeg, .png, .pdf" class="form-control custom" required>
+                                                    
+                                                    <label for="bus-Permit">Business Permit</label>
+                                                    <input type="file" placeholder="" name="Business-permit" accept=".jpg, .jpeg, .png, .pdf" class="form-control custom" required>
+                                                <!-- </form> -->
+                                            </div>
+                                            <div class="modal-footer border-0">
+                                                <!-- <button type="submit" class="btn btn-primary" value="Add Product"><i class="ri-check-fill"></i>Add Product</button> -->
+                                                <button type="submit" class="btn btn-primary me-2"><i class="ri-check-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Add</span></button>
+                                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ri-close-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Cancel</span></button>
+                                            </div>
+                                    </form>    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Table with hoverable rows -->
+                        {% if list_products %}
+                            <div class="table-responsive add-stock-t">
+                                <table id="tableAdd" class="table table-hover">
+                                    <thead>
+                                        <tr class="align-middle">
+                                            <th scope="col">#</th>
+                                            <th scope="col">Product Code</th>
+                                            <th scope="col">Product Name</th>
+                                            <!-- <th scope="col">Batch Number</th> -->
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Expiry Date</th>
+                                            <th scope="col" >Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>  
+                                        {% for list in list_products %}   
+                                        <tr class="align-middle">
+                                            <td class="num-row"></td>
+                                            <td class="modal-view-product">
+                                                <a href="{% url 'admin_site:view_product' list.id %}"  data-bs-toggle="modal" data-bs-target="#viewProductModal" class="text-decoration-none">{{ list.product_code }}</a>
+                                            </td>
+                                            <td style="text-transform: capitalize;">{{ list.product_name }}</td>
+                                            <form action="{% url 'admin_site:update_inventory'  list.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <!-- <td><input type="number" name="batch_no" class="form-control" placeholder="Batch Number" required></td> -->
+                                                <td><input type="number" name="quantity" class="form-control" style="text-align:right;" placeholder="0" required></td>
+                                        
+                                                <td><input type="date" class="form-control" name="expdate"  required></td>
+                                                <!-- <td><input type="submit" value="add" class="btn btn-edit"></td> -->
+                                                <td><button type="submit" class="btn btn-edit align-middle"><i class="ri-add-circle-fill"></i></button></td>
+                                                <input type="hidden" value="{{ list.product_stock }}" name="stock" >
+                                                <input type="hidden" value="{{ list.product_code }}" name="product_code">
+                                                <input type="hidden" value="{{ list.product_name }}" name="product_name">
+                                            </form>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% endif %}
+                        <!-- End Table with hoverable rows -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- VIEW PRODUCT -->
+<div class="modal fade border-0"  id="viewProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0 p-4">
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}
+    

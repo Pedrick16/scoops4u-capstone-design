@@ -1,0 +1,429 @@
+{% extends 'admin_site/base.html' %}
+
+{% block title %}
+    RESELLERS LIST
+{% endblock title %}
+
+{% block template %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+  
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'admin_site:dashboard'%}" id="dash-ad" onclick="myFunction()">
+            <i class="ri-apps-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+  
+        <li class="nav-heading pt-3">Management</li>
+        <li class="nav-item active-nav">
+                <a class="nav-link" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
+                    <i class="ri-user-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>User Accounts</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+                </a>
+            <ul id="users-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="{% url 'admin_site:user_list' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Users List</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_reseller'%}" class="active">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Resellers List</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_inquiry'%}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Requests</span>
+                </a>
+                </li>
+            </ul>
+        </li><!-- End User Accounts Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'admin_site:list_product' %}">
+            <i class="ri-shopping-bag-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Products</span>
+        </a>
+        </li><!-- End Products Page Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#inventory-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-inbox-archive-line"style="font-size: 22px; font-weight: 100; margin-right: 20px"></i>
+            <span>Inventory</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="inventory-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{%url 'admin_site:inventory' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Add Stock</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:view_inventory' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>View Stock</span>
+                </a>
+            </li>
+        </ul>
+        </li><!-- End Inventory Page Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed " data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-shopping-cart-2-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Order</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+        </a>
+        <ul id="sales-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{% url 'admin_site:transaction_orders' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Pending</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_outshipping' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Out For Delivery</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_site:transaction_completed' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Delivered</span>
+                </a>
+            </li>
+        </ul>
+        </li><!-- End Sales Nav -->
+
+        <li class="nav-heading pt-3">Reports</li>
+        <li class="mb-act nav-item">
+            <a class="nav-link collapsed " data-bs-target="#reports-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-file-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Reports</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="reports-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                        <a href="{% url 'admin_site:report_actlog' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Activity Log</span>
+                        </a>
+                </li>
+                <li>
+                        <a href="{% url 'admin_site:report_online_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Online Sales</span>
+                        </a>
+                </li>
+                <li>
+                        <a href="{% url 'admin_site:report_pos_sales' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>POS Sales</span>
+                        </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-heading pt-3">Others</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed " data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-settings-3-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Settings</span><i class="ri-arrow-down-s-line ms-auto" style="font-size: 20px; font-weight: 100;" ></i>
+            </a>
+            <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'admin_site:settings_profile' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Edit Profile</span>
+                    </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:list_archive' %}">
+                    <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Archived Resellers</span>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'admin_site:settings_product' %}">
+                        <i class="ri-checkbox-blank-circle-fill" style="margin-right: 15px" ></i><span>Product Settings</span>
+                </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'admin_site:support' %}" class="nav-link collapsed ">
+                <i class="ri-information-line" style="font-size: 22px; font-weight: 100; margin-right: 20px"></i><span>Support</span>
+            </a>
+        </li>
+    </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main mt-5">
+    <div class="pagetitle">
+        <h1>Resellers</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin_site:dashboard'%}">Home</a></li>
+                <li class="breadcrumb-item">User Accounts</li>
+                <li class="breadcrumb-item active">Resellers List</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- {% for messsage in messages  %}
+    <p class='alert alert-success mt-3'>{{messsage}}</p>
+    {% endfor %} -->
+
+    {% for message in messages  %}
+    {% if 'success' in message.tags %}
+    <p class='alert alert-success mt-3'>{{message}}</p>
+    {% elif 'error' in message.tags %}
+    <p class='alert alert-danger mt-3'>{{message}}</p>
+    {% else %}
+    <p class='alert alert-info mt-3'>{{message}}</p>
+    {% endif %}
+    {% endfor %}
+
+    <section class="section">
+        <div class="empty-screen1 d-none">
+            <img src="../../../../static/img/noresellers.svg" alt="haha">
+            <h5>No Resellers</h5>
+            <p>There are currently no records of resellers registered on the system.</p>
+        </div>
+
+        <div id="resID" class="row d-none">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body mt-3">
+                        <div class="add-user res-d mb-4">
+                            <h5 class="card-title feature">Resellers</h5>
+                            <div class="show-entries">
+                                <div id="showEntries"></div>
+                            </div>
+                            
+                            <a href="{% url 'admin_site:add_reseller' %}" class="btn btn-add modal-add"><i class="ri-add-line align-middle me-2 text-end" style="font-size:17px; font-weight: 500;"></i><span class="align-middle pe-1">Add a New Reseller</span></a>
+                            <!-- <a href="{% url 'admin_site:add_reseller' %}" class="btn btn-add" data-add="addRes" data-bs-toggle="modal" data-bs-target="#addReseller"><i class="ri-add-line align-middle me-2 text-end" style="font-size:17px; font-weight: 500;"></i><span class="align-middle pe-1">Add a New Reseller</span></a> -->
+                            <form class="search-tab" action="{% url 'admin_site:search_reseller' %}" method="GET"  class="text-end px-4">
+                                {% csrf_token %}
+                                <input type="text" id="tableM" class="form-control p-2 ps-3" name="search" placeholder="Search">
+                                <button class="btn btn-search btn-sm nope" type="submit"><i class="ri-search-line"></i></button>
+                            </form>  
+                        </div> 
+
+                        <!-- <button class="btn-edit d-none" id="btnAddModal" data-bs-toggle="modal" data-bs-target="#addReseller">Haha</button>                         -->
+
+                        <!-- add reseller -->
+                        <div class="modal fade border-0" id="addReseller" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered ">
+                                <div class="modal-content border-0 p-4">
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit User -->
+                        <div class="modal fade border-0" id="editUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered ">
+                                <div class="modal-content border-0 p-4">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Table with hoverable rows -->
+                        {% if list_reseller %}
+                        <div class="table-responsive">
+                            <table id="tableMain" class="table table-hover ">
+                                <thead>
+                                <tr class="align-middle">
+                                    <th scope="col">#</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Middle Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Sex</th>
+                                    <th scope="col">Contact No</th>
+                                    <th scope="col" >Address</th>
+                                    <th scope="col" >Email</th>
+                                    <th scope="col" >Valid ID</th>
+                                    <th scope="col" >Business Permit</th>
+                                    <th scope="col" >Status</th>
+                                    <th class="sort-no" scope="col" >Action</th>
+                                </tr>
+                                </thead>
+                            
+                                <tbody id="tableRow">
+                                    {% for list in list_reseller %}
+                                    <tr class="align-middle">
+                                        <td class="num-row"></td>
+                                        <td style="text-transform: capitalize;">{{ list.reseller_fname }}</td>
+                                        <td style="text-transform: capitalize;">{{ list.reseller_mname }}</td>
+                                        <td style="text-transform: capitalize;">{{ list.reseller_lname }}</td>
+                                        <td>{{ list.reseller_gender }}</td>
+                                        <td>{{ list.reseller_contact }}</td>
+                                        <td style="text-transform: capitalize;" class="pe-5">{{ list.reseller_address }}</td>
+                                        <td>{{ list.reseller_email }}</td>
+                                      
+                                        <td class="modal-view-file-VID">
+                                            <a href="{% url 'admin_site:viewingpic_vid' list.id %}"><i class="ri-eye-fill btn-edit"  data-bs-toggle="modal" data-bs-target="#viewFileModal"></i></a>
+                                        </td>
+
+                                      
+
+                                        <td class="modal-view-file-BP">
+                                            <a href="{% url 'admin_site:viewingpic_bpermit' list.id %}"><i class="ri-eye-fill btn-edit"  data-bs-toggle="modal" data-bs-target="#viewFileModal"></i></a>
+                                        </td>
+                                        
+                                        <!-- <td><i class="ri-eye-fill btn-edit" data-bs-toggle="modal" data-bs-target="#viewPic"></i></a></td> -->
+                                        <td><span class="badge rounded-pill bg-primary">{{ list.reseller_status }}</span></td>
+                                        <!-- <td>
+                                            <button name="submit" data-bs-toggle="modal" data-bs-target="#archiveUser" class="btn btn-archive"><i class="ri-archive-fill"></i>ccc</button>
+
+                                        </td> -->
+                                        <!-- <form method="POST" action="{% url 'admin_site:archive_reseller'  list.id %}" onsubmit="return submitForm(this);"> -->
+                                            <!-- <td> -->
+                                                {% csrf_token %}
+                                                <!-- <button name="submit" data-bs-toggle="modal" data-bs-target="#archiveUser" class="btn btn-archive"><i class="ri-archive-fill"></i></button> -->
+                                                <!-- <button name="submit" data-bs-toggle="modal" data-bs-target="#archiveUser" class="btn btn-archive"><i class="ri-archive-fill"></i></button> -->
+                                                
+                                                <!-- <a href="" type="submit" class="btn btn-archive"><i class="ri-archive-fill"></i></a> -->
+                                            <!-- </td> -->
+                                        <!-- </form> -->
+
+                                        <form method="POST" action="{% url 'admin_site:archive_reseller'  list.id %}" onsubmit="return submitForm(this);">
+                                            {% csrf_token %}
+                                        <td> 
+                                            <a href="{% url 'admin_site:edit_reseller' list.id %}"class="btn btn-edit modal-edit"><i class="ri-edit-fill"></i></a>
+                                            <button type="submit" class="btn btn-archive"><i class="ri-archive-fill"></i></button>
+                                            <!-- <input type="submit" class="btn btn-archive"><i class="ri-archive-fill"></i> -->
+                                        </td>
+                                        </form>
+
+                                        <script>
+                                            function submitForm(form) {
+                                                var message = "Do you really want to <b>archive</b> this reseller?";
+                                                
+                                                swal({
+                                                    title: "Archive",
+                                                    // text: "Do you really want to <span>archive</span> this reseller?",
+                                                    content: {
+                                                        element: 'p',
+                                                        attributes: {
+                                                            innerHTML: message,
+                                                        }
+                                                    },
+                                                    
+                                                    // icon: "warning",
+                                                    buttons: {
+                                                        // confirm: "Yes",
+                                                        confirm: {
+                                                            text: "Yes",
+                                                        },
+                                                        cancel: true,
+                                                    },
+                                                    className: 'swal-wide',
+                                                    dangerMode: true,
+                                                    // allowOutsideClick: false,
+                                                    closeOnClickOutside: false
+
+                                                    
+                                                    
+                                                })
+                                                .then(function (isConfirm) {
+                                                    if (isConfirm) {
+                                                        form.submit();
+                                                    }
+                                                });
+                                                return false;
+                                            }
+                                        </script>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                        <!-- End Table with hoverable rows -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VALID ID -->
+        <!-- <button class="btn-edit d-none" id="btnModal" data-bs-toggle="modal" data-bs-target="#viewPic">Haha</button> -->
+
+        <div class="modal fade border-0" id="viewPic" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content border-0 p-4">
+                    <div class="modal-header border-0">
+                        <h1 class="modal-title" id="exampleModalLabel">Valid ID</h1>
+                        <button type="button" class="ri-close-fill" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                        {% if list_reseller %}
+                        <div class="modal-body pt-2 mt-0">
+                            <img id="imgModal" src="" alt="Valid-ID" >
+                        </div>
+                        {% endif %}
+                        <div class="modal-footer border-0">
+                            <!-- <button type="submit" class="btn btn-primary" value="Add Product"><i class="ri-check-fill"></i>Add Product</button> -->
+                            <!-- <button type="submit" class="btn btn-primary me-2"><i class="ri-check-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Add</span></button>
+                            <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ri-close-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Cancel</span></button> -->
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View File Modal -->
+        <div class="modal fade border-0" id="viewFileModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content border-0 p-4">
+                </div>
+            </div>
+        </div>
+
+
+        <!-- BUSINESS PERMIT -->
+        <button class="btn-edit d-none" id="btnModal1" data-bs-toggle="modal" data-bs-target="#viewBP">Haha</button>
+
+        <div class="modal fade border-0" id="viewBP" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content border-0 p-4">
+                    <div class="modal-header border-0">
+                        <h1 class="modal-title" id="exampleModalLabel">Business Permit</h1>
+                        <button type="button" class="ri-close-fill" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                        <!-- {% if list_reseller %} -->
+                        <div class="modal-body pt-2 mt-0">
+                            <img id="imgModal1" src="" alt="Business Permit" >
+                        </div>
+                        <!-- {% endif %} -->
+                        <div class="modal-footer border-0">
+                            <!-- <button type="submit" class="btn btn-primary" value="Add Product"><i class="ri-check-fill"></i>Add Product</button> -->
+                            <!-- <button type="submit" class="btn btn-primary me-2"><i class="ri-check-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Add</span></button>
+                            <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ri-close-line align-middle me-2 text-end" style="font-size:17px;"></i><span class="align-middle pe-1">Cancel</span></button> -->
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade border-0" id="archiveUser" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-archive modal-dialog-scrollable modal-dialog-centered ">
+                <div class="modal-content border-0 p-4">
+                    <div class="modal-header border-0">
+                        <h1 class="modal-title" id="exampleModalLabel">Archive</h1>
+                        <button type="button" class="ri-close-fill" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- <form action="{% url 'admin_site:add_reseller' %}" method="POST"> -->
+                            <!-- {% csrf_token %} -->
+                            <div class="modal-body pt-2 mt-0">
+                                <p>Do you really want to <span>archive</span> this reseller?</p>
+                            </div>
+                            <div class="modal-footer border-0 d-flex justify-content-start">
+                                <!-- <button type="submit" class="btn btn-primary" value="Add Product"><i class="ri-check-fill"></i>Add Product</button> -->
+                                <button type="submit" class="btn btn-primary me-2"><i class="ri-check-line align-middle me-2 text-start" style="font-size:17px;"></i><span class="align-middle pe-1">Yes</span></button>
+                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ri-close-line align-middle me-2 text-start" style="font-size:17px;"></i><span class="align-middle pe-1">Cancel</span></button>
+                            </div>
+                    <!-- </form>     -->
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock template %}
+
+    
